@@ -28,25 +28,43 @@
   <body>
 
     <div class="container">
+      <h2 class="form-signin-heading">Add an item to your ToDo List</h2>
+      <form class="form-signin" action="index.php" method="post" role="form">
+        <input type="text" class="form-control" placeholder="Enter a Task" name="task">
+        <hr>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit Task</button>
+        <hr>
+      </form>
       <?php
         $link = mysqli_connect('localhost', 'root', 'Udonis 1', 'todoList');
         if (!$link) {
           die('Could not connect: ' . mysql_error());
         }
-        echo 'Connected successfully';
+        //echo 'Connected successfully';
+        if(isset($_POST[task])){
+        $sql="INSERT INTO Tasks (TaskName, Status)
+        VALUES('$_POST[task]', 0)";
+
+        if (!mysqli_query($link,$sql)){
+          die('Error: ' . mysqli_error($link));
+        }
+      }
+        $result = mysqli_query($link,"SELECT * FROM Tasks");
+        
+        while($row = mysqli_fetch_array($result)){
+          if($row[Status] == 1){
+            echo "<input type=".'"checkbox"'." value=".$row[TaskName]." checked>" . $row[TaskName];
+          }
+          else{
+            echo "<input type=".'"checkbox"'." value=".$row[TaskName]." >" . $row[TaskName];
+          }
+          echo "<br/>";
+        }
+        
         mysql_close($link);
       ?>
 
-      <h2 class="form-signin-heading">Add an item to your ToDo List</h2>
-      <form class="form-signin" role="form">
-        <input type="text" class="form-control" placeholder="Enter a Task" required="" autofocus="">
-        <hr>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit Task</button>
-        <hr>
-        <label class="checkbox">
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
-      </form>
+      
 
     </div> <!-- /container -->
 
