@@ -28,6 +28,14 @@
   <body>
 
     <div class="container">
+      <?php
+        $link = mysqli_connect('localhost', 'root', 'Udonis 1', 'todoList');
+        if (!$link) {
+          die('Could not connect: ' . mysql_error());
+        }
+        echo 'Connected successfully';
+        mysql_close($link);
+      ?>
 
       <h2 class="form-signin-heading">Add an item to your ToDo List</h2>
       <form class="form-signin" role="form">
