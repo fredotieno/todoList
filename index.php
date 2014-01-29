@@ -8,6 +8,23 @@
     <meta name="author" content="Fred Otieno">
 
     <title>ToDo List</title>
+    <script type="text/javascript">
+      function refresh(str)      
+      {
+
+        if (window.XMLHttpRequest)
+        {// code for IE7+, Firefox, Chrome, Opera, Safari
+          xmlhttp=new XMLHttpRequest();
+        }
+        else
+        {// code for IE6, IE5
+          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("GET","checktask.php?q="+str,true);
+        xmlhttp.send();
+        alert(str);
+      }
+    </script>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -50,16 +67,17 @@
         }
       }
         $result = mysqli_query($link,"SELECT * FROM Tasks");
-        
+        echo "<form name=".'"tasks"'.">";
         while($row = mysqli_fetch_array($result)){
           if($row[Status] == 1){
             echo "<input type=".'"checkbox"'." value=".$row[TaskName]." checked>" . $row[TaskName];
           }
           else{
-            echo "<input type=".'"checkbox"'." value=".$row[TaskName]." >" . $row[TaskName];
+            echo "<input type=".'"checkbox"'." value=".$row[TaskName]." onchange=".'"refresh(this.value)"'.">" . $row[TaskName];
           }
           echo "<br/>";
         }
+        echo "</form>";
         
         mysql_close($link);
       ?>
